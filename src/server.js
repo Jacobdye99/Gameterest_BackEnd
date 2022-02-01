@@ -1,10 +1,11 @@
-// import 'dotenv/config'
-import express from "express"
-import mongoose from "mongoose"
-import bodyParser from 'body-parser'
-import cookieParser from 'cookie-parser'
-import logger from 'morgan'
-import Session from 'express-session'
+import 'dotenv/config';
+import express from 'express';
+import mongoose from "mongoose";
+// import bodyParser from 'body-parser'
+// import cookieParser from 'cookie-parser'
+import logger from 'morgan';
+import Session from 'express-session';
+import cors from 'cors'
 
 const session = Session
 
