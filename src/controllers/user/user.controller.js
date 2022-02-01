@@ -1,8 +1,7 @@
-import { restart } from 'nodemon';
 import User from '../../models/user.js';
 import errorHandler from '../../utilities/error.js';
 
-export const fetchAllUsers = async (req, res) => {
+export const fetchAllUsers = (req, res) => {
   try {
     const allUsers = await User.find(
       {}, {
@@ -11,7 +10,6 @@ export const fetchAllUsers = async (req, res) => {
       lastName: 1,
       email: 1,
       avatar: 1,
-
     }
     );
     if (allUsers) {
