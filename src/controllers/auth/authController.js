@@ -50,10 +50,23 @@ export const signUpUser = (req, res) => {
       isAdmin: req.body.isAdmin,
     })
     if (newUser) {
-      const token = createToken(newUser._id)
+      const token = createToken(newUser._id);
+      res.cookie("jwt", token, { maxAge: 84000 });
+      newUser.password = securePassword(newUser.password);
+      newUser.confirmPassword = newUser.password
+
+      res.json(errorHandler(false, `Hi! ${newUser.firstName.toUpperCase()}! A warm welcome to my user API!`,
+        { user: newUser._id }
+      )
+      )
+      newUser.save()
+    } else {
+      return res.json(errorHandler(true, "Error registering a new user"))
     }
 
   } catch (error) {
+    console.log(error.message)
+    return res.json(errorHandler(true, "Error registering a new user"))
 
   }
 }
