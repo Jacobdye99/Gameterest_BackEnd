@@ -5,6 +5,7 @@ export const fetchAllUsers = (req, res) => {
   try {
     const allUsers = await User.find(
       {}, {
+      _id: 1,
       userName: 1,
       firstName: 1,
       lastName: 1,
