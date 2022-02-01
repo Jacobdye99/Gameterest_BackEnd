@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import logger from 'morgan';
 import Session from 'express-session';
 import cors from 'cors'
+import user from "./routes/user.js"
 
 const session = Session
 
@@ -25,7 +26,7 @@ const db = mongoose.connection
 
 app.use(express.json());
 app.use(cors())
-// app.use("/api", user)
+app.use("/api", user)
 
 app.use(logger('combined'));
 
