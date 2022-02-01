@@ -38,3 +38,25 @@ export const deleteUser = (req, res) => {
     return res.json(errorHandler(true, "Error deleting user"))
   }
 }
+
+export const updateUser = (req, res) => {
+  try {
+    User.findOneAndUpdate(
+      { userName: req.params.userName },
+      req.body,
+      { new: true },
+      (error, updatedUser) => {
+        if (updatedUser) {
+          return res.json(errorHandler(false, "User has been updated", updatedUser))
+        } else {
+          return res.json(errorHandler(true, "Error updating user", {
+            error: error.message
+          }))
+        }
+      }
+    )
+  }
+  catch (error) {
+    return res.json(errorHandler(true, "Error updating user"))
+  }
+}
