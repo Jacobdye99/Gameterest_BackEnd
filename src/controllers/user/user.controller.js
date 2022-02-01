@@ -1,3 +1,4 @@
+import { restart } from 'nodemon';
 import User from '../../models/user.js';
 import errorHandler from '../../utilities/error.js';
 
@@ -58,5 +59,26 @@ export const updateUser = (req, res) => {
   }
   catch (error) {
     return res.json(errorHandler(true, "Error updating user"))
+  }
+}
+
+export const findUser = (req, res) => {
+  try {
+    User.findById(req.params.id, (error, foundUser) => {
+      if (foundUser) {
+        return res.json(errorHandler(false, "User identified", {
+          user: {
+            userName,
+            name: `${firstName} ${lastName}`,
+            email,
+            member_since: createdAt
+          }
+        }))
+      } else {
+        return res.json(errorHandler(true, "Issues locating user"))
+      }
+    })
+  } catch (error) {
+    return res.json(errorHandler(true, "Issues locating user"))
   }
 }
