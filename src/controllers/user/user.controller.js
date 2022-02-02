@@ -44,7 +44,7 @@ export const deleteUser = (req, res) => {
 export const updateUser = (req, res) => {
   try {
     User.findOneAndUpdate(
-      { userName: req.params.userName },
+      { _id: req.params.id },
       req.body,
       { new: true },
       (error, updatedUser) => {
