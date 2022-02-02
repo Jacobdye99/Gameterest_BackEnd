@@ -74,16 +74,16 @@ export const signUpUser = async (req, res) => {
   }
 }
 
-export const loginUser = (req, res) => {
+export const loginUser = async (req, res) => {
   try {
-    const user = User.findUser({
+    const user = await User.findOne({
       email: req.body.email.toLowerCase(),
-    }, { confirmPassword: 0 })
+    }, { confirmPassword: 0, })
 
     if (!user) {
       return res.json(errorHandler(true, "A user with this email does not exist"))
     }
-    const auth = bcrypt.compare(req.body.password, user.password);
+    const auth = await bcrypt.compare(req.body.password, user.password);
 
     if (!auth) {
       return res.json(errorHandler(true, "Password is incorrect"))
@@ -92,11 +92,12 @@ export const loginUser = (req, res) => {
     const { userName } = user;
     const token = createToken(user._id);
 
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 })
+    res.cookie("jwt", token, { httpOnly: "true", maxAge: 840000 })
     res.json(errorHandler(false, `Welcome back, ${userName}`, {
       user,
       token,
     }))
+    req.session.user = user
   } catch (error) {
     return res.json(errorHandler(true, "Trouble logging in user"))
   }
