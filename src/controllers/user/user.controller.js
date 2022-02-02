@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 import { User, Comment } from '../../models/user.js';
 import errorHandler from '../../utilities/error.js';
 
-export const fetchAllUsers = (req, res) => {
+export const fetchAllUsers = async (req, res) => {
   try {
-    const allUsers = User.find(
+    const allUsers = await User.find(
       {}, {
       _id: 1,
       userName: 1,
