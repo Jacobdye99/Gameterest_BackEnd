@@ -150,7 +150,8 @@ export const updateComment = async (req, res) => {
     User.findOneAndUpdate({ _id: req.params.userid, comments: { $elemMatch: {_id:mongoose.Types.ObjectId(req.params.id) }}},
     { $set: {
       'comments.$.comment': req.body.comment,
-      'comments.$.likes': req.body.likes
+      'comments.$.likes': req.body.likes,
+      'comments.$.game': req.body.game
     },
   },
   { 'new': true, 'upsert': true }, (error, comment) => {
