@@ -4,7 +4,7 @@ import errorHandler from '../../utilities/error.js';
 
 export const fetchAllUsers = async (req, res) => {
   try {
-    const allUsers = await User.find(
+    const allUsers = await User.findOne(
       {}, {
       _id: 1,
       userName: 1,
@@ -148,7 +148,7 @@ export const deleteComment = (req, res) => {
 
 export const updateComment = (req, res) => {
   try {
-    User.findOneAndUpdate({ _id: req.params.userid, comments: { $elemMatch: {_id:mongoose.Types.ObjectId(req.params.id) }}},
+    User.findOneAndUpdate({ _id: req.params.userid, comments: { $elemMatch: { _id:mongoose.Types.ObjectId(req.params.id) }}},
     { $set: {
       'comments.$.comment': req.body.comment,
       'comments.$.likes': req.body.likes,
