@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { User, Comment } from '../../models/user.js';
 import errorHandler from '../../utilities/error.js';
 
@@ -119,5 +120,48 @@ export const getComments = async (req, res) => {
     })
   } catch (error) {
     res.json(errorHandler(true, "error fetching comments"))
+  }
+}
+
+export const deleteComment = async (req, res) => {
+  console.log(req.params.userid, req.params.id)
+  try {
+    User.findByIdAndUpdate(req.params.userid, 
+      {
+        $pull:{
+          comments: { _id: req.params.id},
+        }
+      },
+      { new: true }, (error, comment) => {
+        if(error) {
+          return res.json(errorHandler(true, "error deleting comment"))
+        } else {
+          res.json(errorHandler(false, "deleting comment", comment))
+        }
+      }
+      ) 
+  } catch (error) {
+    return res.json(errorHandler(true, "Error with Comment"))
+  }
+};
+
+export const updateComment = async (req, res) => {
+  try {
+    User.findOneAndUpdate({ _id: req.params.userid, comments: { $elemMatch: {_id:mongoose.Types.ObjectId(req.params.id) }}},
+    { $set: {
+      'comments.$.comment': req.body.comment,
+      'comments.$.likes': req.body.likes
+    },
+  },
+  { 'new': true, 'upsert': true }, (error, comment) => {
+    if (error) {
+      return res.json(errorHandler(true, "Issues updating a comment"))
+    } else {
+      res.json(errorHandler(false, "updating Comment", comment))
+    }
+  }
+    )
+  } catch (error) {
+    return res.json(errorHandler(true, "Error updating comment"))
   }
 }
