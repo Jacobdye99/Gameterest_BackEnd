@@ -16,26 +16,28 @@ export const authRequired = (req, res, next) => {
   if (token) {
     jwt.verify(token, secret, (error, decodedTkn) => {
       if (error) {
-        return res.status(401).json(errorHandler(true, "Auth Error"))
+        return res.json(errorHandler(true, "Auth Error"))
           .redirect("/login");
       } else {
         next();
       }
     })
   } else {
-    res.status(401).json(errorHandler(true, "Auth Error"))
+    res.json(errorHandler(true, "Auth Error"))
   }
 };
 
-export const signUpUser = (req, res) => {
+export const signUpUser = async (req, res) => {
   try {
-    const existingUser = User.findOne({
-      email: req.body.email,
+    const existingUser = await User.findOne({
+      email: req.body.email.toLowerCase(),
       userName: req.body.userName,
-    }).lean(true)
-    // if (existingUser) {
-    //   return res.json(errorHandler(true, "A user already exists with these creditials"))
-    // }
+    }).lean(true);
+
+    if (existingUser) {
+      console.log(existingUser)
+      return res.json(errorHandler(true, "A user already exists with these creditials"))
+    }
 
     const newUser = new User({
       userName: req.body.userName.toLowerCase(),
@@ -45,21 +47,22 @@ export const signUpUser = (req, res) => {
       password: req.body.password,
       confirmPassword: req.body.confirmPassword,
       avatar: req.body.avatar,
-      // comments: [commentSchema],
+      // comments: [],
       // favorites: [favoriteSchema],
       isAdmin: req.body.isAdmin,
-    })
+    });
     if (newUser) {
       const token = createToken(newUser._id);
       res.cookie("jwt", token, { maxAge: 84000 });
-      newUser.password = securePassword(newUser.password);
-      newUser.confirmPassword = newUser.password
+      newUser.password = await securePassword(newUser.password);
+      newUser.confirmPassword = newUser.password;
 
+      console.log(newUser.password)
       res.json(errorHandler(false, `Hi! ${newUser.firstName.toUpperCase()}! A warm welcome to my user API!`,
         { user: newUser._id }
       )
       )
-      newUser.save()
+      await newUser.save()
     } else {
       return res.json(errorHandler(true, "Error registering a new user"))
     }
