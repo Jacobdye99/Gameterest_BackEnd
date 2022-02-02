@@ -99,7 +99,7 @@ export const addComment = async (req, res) => {
         }
         user.comments.push(newComment)
         user.save((error) => {
-          // return res.redirect(`/api/user/${comment.id}/comment`)
+          return res.redirect(`/api/user/comment/${user.id}`)
         })
       })
     })
