@@ -1,10 +1,12 @@
+
 import express from 'express'
 import defaultController from '../controllers/defaultController.js'
 import { fetchAllUsers, deleteUser, findUser, updateUser, getComments, addComment, deleteComment, updateComment } from '../controllers/user/user.controller.js'
 import { signUpUser, loginUser, logoutUser } from '../controllers/auth/authController.js'
 
 
-const Router = express.Router()
+
+const Router = express.Router();
 
 Router.get("/", defaultController)
 
@@ -24,7 +26,7 @@ Router.get("/", defaultController)
 
   .get('/user/comment/:id', getComments)
 
-  .post('/comment/:id', addComment)
+  .post('/comment/:id', addComment);
 
   .delete('/delete/:userid/:id', deleteComment)
 
@@ -36,4 +38,4 @@ Router.get("/", defaultController)
 
 
 
-export default Router
+export default Router;
