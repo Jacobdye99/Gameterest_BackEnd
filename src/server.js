@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import express from 'express';
 import mongoose from "mongoose";
-// import bodyParser from 'body-parser'
-// import cookieParser from 'cookie-parser'
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
 import logger from 'morgan';
 import Session from 'express-session';
 import cors from 'cors'
@@ -29,6 +29,8 @@ app.use(express.json());
 app.use(cors())
 app.use("/api", user)
 
+app.use(cookieParser())
+app.use(bodyParser.json()).use(bodyParser.urlencoded({ extended: false }))
 app.use(logger('combined'));
 
 db.on("error", error => console.log(error.message))
