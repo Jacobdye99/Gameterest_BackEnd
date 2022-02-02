@@ -1,4 +1,4 @@
-import { User } from '../../models/user.js';
+import { User, Comment } from '../../models/user.js';
 import errorHandler from '../../utilities/error.js';
 
 export const fetchAllUsers = async (req, res) => {
@@ -83,5 +83,41 @@ export const findUser = (req, res) => {
     })
   } catch (error) {
     return res.json(errorHandler(true, "Issues locating user"))
+  }
+}
+
+export const addComment = async (req, res) => {
+  try {
+    User.findById(req.params.id, (error, user) => {
+      if (error) {
+        res.json(errorHandler(true, "Error finding user", {error: error.message}))
+      }
+      const newComment = {...req.body}
+      Comment.create(newComment, (error, comment) => {
+        if (error) {
+          res.json(errorHandler(true, "error creating comment"))
+        }
+        user.comments.push(newComment)
+        user.save((error) => {
+          // return res.redirect(`/api/user/${comment.id}/comment`)
+        })
+      })
+    })
+  } catch (error) {
+    res.json(errorHandler(true, "Error commenting", {error: error.message}))
+  }
+}
+
+export const getComments = async (req, res) => {
+  try {
+    User.findById(req.params.id).populate("comments").exec((error, comments) => {
+      if (comments) {
+        res.json(errorHandler(false, "here are your comments", {comments}))
+      } else {
+        res.json(errorHandler(true, "error getting users comments", {error}))
+      }
+    })
+  } catch (error) {
+    res.json(errorHandler(true, "error fetching comments"))
   }
 }
