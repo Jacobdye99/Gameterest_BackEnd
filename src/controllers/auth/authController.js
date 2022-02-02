@@ -103,6 +103,6 @@ export const loginUser = async (req, res) => {
 };
 
 export const logoutUser = (req, res) => {
-  res.cookie('jwt', "", { maxAge: 1 });
-  res.redirect("/");
-}
+
+  res.cookie('jwt', "", { maxAge: 1 })
+  res.redirect("/api")

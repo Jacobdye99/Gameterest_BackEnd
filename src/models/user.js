@@ -2,7 +2,9 @@ import mongoose from 'mongoose'
 
 const commentSchema = mongoose.Schema(
     {
+        game: { type: String, required: true, trim: true},
         comment: { type: String, required: true, trim: true},
+        likes: { type: Number, required: true, trim: true}
     },
     { timestamps: true }
 );
