@@ -87,7 +87,7 @@ export const findUser = (req, res) => {
   };
 };
 
-export const addComment = async (req, res) => {
+export const addComment = (req, res) => {
   try {
     User.findById(req.params.id, (error, user) => {
       if (error) {
@@ -109,7 +109,7 @@ export const addComment = async (req, res) => {
   };
 };
 
-export const getComments = async (req, res) => {
+export const getComments = (req, res) => {
   try {
     User.findById(req.params.id).populate("comments").exec((error, comments) => {
       if (comments) {
@@ -124,7 +124,7 @@ export const getComments = async (req, res) => {
   };
 };
 
-export const deleteComment = async (req, res) => {
+export const deleteComment = (req, res) => {
   console.log(req.params.userid, req.params.id)
   try {
     User.findByIdAndUpdate(req.params.userid, 
@@ -146,7 +146,7 @@ export const deleteComment = async (req, res) => {
   }
 };
 
-export const updateComment = async (req, res) => {
+export const updateComment = (req, res) => {
   try {
     User.findOneAndUpdate({ _id: req.params.userid, comments: { $elemMatch: {_id:mongoose.Types.ObjectId(req.params.id) }}},
     { $set: {
