@@ -38,10 +38,10 @@ export const signUpUser = (req, res) => {
     }
 
     const newUser = new User({
-      userName: req.body.userName,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
+      userName: req.body.userName.toLowerCase(),
+      firstName: req.body.firstName.toLowerCase(),
+      lastName: req.body.lastName.toLowerCase(),
+      email: req.body.email.toLowerCase(),
       password: req.body.password,
       confirmPassword: req.body.confirmPassword,
       avatar: req.body.avatar,
@@ -69,4 +69,37 @@ export const signUpUser = (req, res) => {
     return res.json(errorHandler(true, "Error registering a new user"))
 
   }
+}
+
+export const loginUser = (req, res) => {
+  try {
+    const user = User.findUser({
+      email: req.body.email.toLowerCase(),
+    }, { confirmPassword: 0 })
+
+    if (!user) {
+      return res.json(errorHandler(true, "A user with this email does not exist"))
+    }
+    const auth = bcrypt.compare(req.body.password, user.password);
+
+    if (!auth) {
+      return res.json(errorHandler(true, "Password is incorrect"))
+    }
+
+    const { userName } = user;
+    const token = createToken(user._id);
+
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 })
+    res.json(errorHandler(false, `Welcome back, ${userName}`, {
+      user,
+      token,
+    }))
+  } catch (error) {
+    return res.json(errorHandler(true, "Trouble logging in user"))
+  }
+}
+
+export const logoutUser = (req, res) => {
+  res.cookie('jwt', "", { maxAge: 1 })
+  res.redirect("/")
 }
