@@ -56,7 +56,7 @@ export const signUpUser = async (req, res) => {
       res.cookie("jwt", token, { maxAge: 84000 });
       newUser.password = await securePassword(newUser.password);
       newUser.confirmPassword = newUser.password;
-      
+
       console.log(newUser.password)
       res.json(errorHandler(false, `Hi! ${newUser.firstName.toUpperCase()}! A warm welcome to my user API!`,
         { user: newUser._id }
