@@ -1,9 +1,9 @@
 import { User, Comment } from '../../models/user.js';
 import errorHandler from '../../utilities/error.js';
 
-export const fetchAllUsers = async (req, res) => {
+export const fetchAllUsers = (req, res) => {
   try {
-    const allUsers = await User.find(
+    const allUsers = User.find(
       {}, {
       _id: 1,
       userName: 1,

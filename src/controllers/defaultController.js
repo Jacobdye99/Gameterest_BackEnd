@@ -1,6 +1,6 @@
 import errorHandler from "../utilities/error.js";
 
-const defaultController = async (req, res, next) => {
+const defaultController = (req, res, next) => {
   res.json(errorHandler(false, "Home", "Welcome to the internet"));
 };
 
