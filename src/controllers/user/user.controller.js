@@ -4,7 +4,7 @@ import errorHandler from '../../utilities/error.js';
 
 export const fetchAllUsers = async (req, res) => {
   try {
-    const allUsers = User.find(
+    const allUsers = await User.find(
       {}, {
       _id: 1,
       userName: 1,
