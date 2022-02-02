@@ -7,12 +7,13 @@ import logger from 'morgan';
 import Session from 'express-session';
 import cors from 'cors'
 import user from "./routes/user.js"
+import { initMongoServer } from './db/connection.js';
 
 const session = Session
 
 console.log(process.env.SECRET)
 
-
+initMongoServer()
 const app = express()
 app.use(session({
     secret: "Hello",

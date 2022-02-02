@@ -1,9 +1,9 @@
 import { User } from '../../models/user.js';
 import errorHandler from '../../utilities/error.js';
 
-export const fetchAllUsers = (req, res) => {
+export const fetchAllUsers = async (req, res) => {
   try {
-    const allUsers = User.find(
+    const allUsers = await User.find(
       {}, {
       _id: 1,
       userName: 1,
@@ -11,16 +11,18 @@ export const fetchAllUsers = (req, res) => {
       lastName: 1,
       email: 1,
       avatar: 1,
+      comments: 1,
+      isAdmin: 1,
     }
     );
     if (allUsers) {
       return res.json(errorHandler(false, "Fetching all Users", allUsers))
     } else {
-      return res.json(errorHandler(true, "Error Fetching all Users"))
+      return res.status(403).json(errorHandler(true, "Error Fetching Users"))
     }
   }
   catch (error) {
-    return res.json(errorHandler(true, "Error Fetching all Users"))
+    return res.status(400).json(errorHandler(true, "Error Fetching all Users"))
   }
 }
 
