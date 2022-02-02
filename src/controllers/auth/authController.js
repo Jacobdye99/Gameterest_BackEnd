@@ -27,9 +27,9 @@ export const authRequired = (req, res, next) => {
   }
 };
 
-export const signUpUser = (req, res) => {
+export const signUpUser = async (req, res) => {
   try {
-    const existingUser = User.findOne({
+    const existingUser = await User.findOne({
       email: req.body.email.toLowerCase(),
       userName: req.body.userName,
     }).lean(true);
