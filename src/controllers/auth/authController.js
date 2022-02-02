@@ -1,4 +1,4 @@
-import User from "../../models/user.js"
+import { User } from "../../models/user.js"
 import errorHandler from '../../utilities/error.js'
 import { securePassword } from '../../utilities/securePassword.js'
 import bcrypt from 'bcryptjs';

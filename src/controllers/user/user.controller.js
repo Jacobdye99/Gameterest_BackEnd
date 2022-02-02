@@ -1,4 +1,4 @@
-import User from '../../models/user.js';
+import { User } from '../../models/user.js';
 import errorHandler from '../../utilities/error.js';
 
 export const fetchAllUsers = (req, res) => {
