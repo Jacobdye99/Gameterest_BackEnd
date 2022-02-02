@@ -33,9 +33,9 @@ export const signUpUser = (req, res) => {
       email: req.body.email,
       userName: req.body.userName,
     }).lean(true)
-    if (existingUser) {
-      return res.json(errorHandler(true, "A user already exists with these creditials"))
-    }
+    // if (existingUser) {
+    //   return res.json(errorHandler(true, "A user already exists with these creditials"))
+    // }
 
     const newUser = new User({
       userName: req.body.userName.toLowerCase(),
