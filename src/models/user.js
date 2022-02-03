@@ -9,11 +9,13 @@ const commentSchema = mongoose.Schema(
     { timestamps: true }
 );
 
-// const favoriteSchema = mongoose.Schema(
-//     {
-//         favorite:
-//     }
-// )
+const favoriteSchema = mongoose.Schema(
+    {
+        gameId: { type: String, required: true, trim: true},
+        name: { type: String, required: true, trim: true},
+        image: { type: String, required: true, trim: true},
+    }
+)
 
 
 const userSchema = mongoose.Schema(
@@ -26,7 +28,7 @@ const userSchema = mongoose.Schema(
         confirmPassword: { type: String, required: true, trim: true},
         avatar: { type: String, required: true, trim: true},
         comments: [commentSchema],
-        // favorites: [favoriteSchema],
+        favorites: [favoriteSchema],
         isAdmin: false,
     },
     { timestamps: true }
@@ -34,3 +36,4 @@ const userSchema = mongoose.Schema(
 
 export const User = mongoose.model("User", userSchema,"users")
 export const Comment = mongoose.model("Comment", commentSchema,"comments")
+export const Favorite = mongoose.model("Favorite", favoriteSchema, "favorites")

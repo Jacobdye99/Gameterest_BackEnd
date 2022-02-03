@@ -1,7 +1,7 @@
 
 import express from 'express'
 import defaultController from '../controllers/defaultController.js'
-import { fetchAllUsers, deleteUser, findUser, updateUser, getComments, addComment, deleteComment, updateComment } from '../controllers/user/user.controller.js'
+import { fetchAllUsers, deleteUser, findUser, updateUser, getComments, addComment, deleteComment, updateComment, addFavorite, getFavorites, deleteFavorite } from '../controllers/user/user.controller.js'
 import { signUpUser, loginUser, logoutUser } from '../controllers/auth/authController.js'
 
 
@@ -24,7 +24,7 @@ Router.get("/", defaultController)
 
   .get("/logout", logoutUser)
 
-  .get('/user/comment/:id', getComments)
+  .get('/user/comments/:id', getComments)
 
   .post('/comment/:id', addComment)
 
@@ -32,9 +32,11 @@ Router.get("/", defaultController)
 
   .put("/update/comment/:userid/:id", updateComment)
 
+  .post('/favorite/:id', addFavorite)
 
+  .get('/user/favorites/:id', getFavorites)
 
-
+  .delete('/delete/favorite/:userid/:id', deleteFavorite)
 
 
 
