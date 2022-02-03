@@ -138,7 +138,7 @@ export const deleteComment = (req, res) => {
         if(error) {
           return res.json(errorHandler(true, "error deleting comment"))
         } else {
-          res.json(errorHandler(false, "deleting comment", comment))
+          res.json(errorHandler(false, "deleting comment", comment.comments))
         }
       }
       ) 
@@ -160,7 +160,7 @@ export const updateComment = (req, res) => {
     if (error) {
       return res.json(errorHandler(true, "Issues updating a comment"))
     } else {
-      res.json(errorHandler(false, "updating Comment", comment))
+      res.json(errorHandler(false, "updating Comment", comment.comments))
     }
   }
     )
@@ -221,7 +221,7 @@ export const deleteFavorite = (req, res) => {
         if(error) {
           return res.json(errorHandler(true, "error deleting favorite"))
         } else {
-          res.json(errorHandler(false, "deleting favorite", favorite))
+          res.json(errorHandler(false, "deleting favorite", favorite.favorites))
         }
       }
       ) 
