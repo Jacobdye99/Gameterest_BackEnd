@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { User, Comment } from '../../models/user.js';
+import { User, Comment, Favorite } from '../../models/user.js';
 import errorHandler from '../../utilities/error.js';
 
 export const fetchAllUsers = async (req, res) => {
@@ -13,6 +13,7 @@ export const fetchAllUsers = async (req, res) => {
       email: 1,
       avatar: 1,
       comments: 1,
+      favorites: 1,
       isAdmin: 1,
     }
     );
@@ -113,7 +114,7 @@ export const getComments = (req, res) => {
   try {
     User.findById(req.params.id).populate("comments").exec((error, comments) => {
       if (comments) {
-        res.json(errorHandler(false, "here are your comments", { comments }))
+        res.json(errorHandler(false, "here are your comments",  comments.comments ))
       } else {
         res.json(errorHandler(true, "error getting users comments", { error }))
       }
@@ -168,3 +169,63 @@ export const updateComment = (req, res) => {
   }
 }
 
+export const addFavorite = (req, res) => {
+  try {
+    User.findById(req.params.id, (error, user) => {
+      if (error) {
+        res.json(errorHandler(true, "Error finding user", { error: error.message }))
+      }
+      const newFavorite = { ...req.body };
+      Favorite.create(newFavorite, (error, favorite) => {
+        if (error) {
+          res.json(errorHandler(true, "error adding Favorite"))
+        }
+        user.favorites.push(newFavorite);
+        user.save((error) => {
+          return res.redirect(`/api/user/favorites/${user.id}`)
+        });
+      });
+    });
+  } catch (error) {
+    res.json(errorHandler(true, "Error Favoriting", { error: error.message }))
+  }
+};
+
+
+export const getFavorites = (req, res) => {
+  try {
+    User.findById(req.params.id).populate("favorites").exec((error, favorites) => {
+      // console.log(favorites)
+      if (favorites) {
+        res.json(errorHandler(false, "here are your favorites",  favorites.favorites ))
+      } else {
+        res.json(errorHandler(true, "error getting users favorites", { error }))
+      }
+    });
+  } catch (error) {
+    res.json(errorHandler(true, "error fetching favorites"))
+
+  }
+};
+
+export const deleteFavorite = (req, res) => {
+  // console.log(req.params.userid, req.params.id)
+  try {
+    User.findByIdAndUpdate(req.params.userid, 
+      {
+        $pull:{
+          favorites: { _id: req.params.id},
+        }
+      },
+      { new: true }, (error, favorite) => {
+        if(error) {
+          return res.json(errorHandler(true, "error deleting favorite"))
+        } else {
+          res.json(errorHandler(false, "deleting favorite", favorite))
+        }
+      }
+      ) 
+  } catch (error) {
+    return res.json(errorHandler(true, "Error with favorites delete"))
+  }
+};
