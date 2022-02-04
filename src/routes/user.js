@@ -2,7 +2,7 @@
 import express from 'express'
 import defaultController from '../controllers/defaultController.js'
 import { fetchAllUsers, deleteUser, findUser, updateUser, getComments, addComment, deleteComment, updateComment, addFavorite, getFavorites, deleteFavorite } from '../controllers/user/user.controller.js'
-import { signUpUser, loginUser, logoutUser } from '../controllers/auth/authController.js'
+import { signUpUser, loginUser, logoutUser, authRequired } from '../controllers/auth/authController.js'
 
 
 
@@ -26,17 +26,17 @@ Router.get("/", defaultController)
 
   .get('/user/comments/:id', getComments)
 
-  .post('/comment/:id', addComment)
+  .post('/comment/:id', authRequired, addComment)
 
-  .delete('/delete/:userid/:id', deleteComment)
+  .delete('/delete/:userid/:id', authRequired, deleteComment)
 
-  .put("/update/comment/:userid/:id", updateComment)
+  .put("/update/comment/:userid/:id", authRequired, updateComment)
 
-  .post('/favorite/:id', addFavorite)
+  .post('/favorite/:id',authRequired, addFavorite)
 
   .get('/user/favorites/:id', getFavorites)
 
-  .delete('/delete/favorite/:userid/:id', deleteFavorite)
+  .delete('/delete/favorite/:userid/:id', authRequired, deleteFavorite)
 
 
 
