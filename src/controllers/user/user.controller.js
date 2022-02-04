@@ -153,7 +153,7 @@ export const updateComment = (req, res) => {
     { $set: {
       'comments.$.comment': req.body.comment,
       'comments.$.likes': req.body.likes,
-      'comments.$.game': req.body.game
+      // 'comments.$.game': req.body.game
     },
   },
   { 'new': true, 'upsert': true }, (error, comment) => {
