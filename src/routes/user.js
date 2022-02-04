@@ -26,7 +26,7 @@ Router.get("/", defaultController)
 
   .get('/user/comments/:id', getComments)
 
-  .post('/comment/:id', addComment)
+  .post('/comment/:id', authRequired, addComment)
 
   .delete('/delete/:userid/:id', authRequired, deleteComment)
 
@@ -36,7 +36,7 @@ Router.get("/", defaultController)
 
   .get('/user/favorites/:id', getFavorites)
 
-  .delete('/delete/favorite/:userid/:id', deleteFavorite)
+  .delete('/delete/favorite/:userid/:id', authRequired, deleteFavorite)
 
 
 
