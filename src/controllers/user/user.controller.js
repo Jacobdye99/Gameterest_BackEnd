@@ -101,7 +101,7 @@ export const addComment = (req, res) => {
         }
         user.comments.push(newComment);
         user.save((error) => {
-          return res.redirect(`/api/user/comment/${user.id}`)
+          // return res.redirect(`/api/user/comment/${user.id}`)
         });
       });
     });
