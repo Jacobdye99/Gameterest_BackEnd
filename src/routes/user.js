@@ -26,7 +26,7 @@ Router.get("/", defaultController)
 
   .get('/user/comments/:id', getComments)
 
-  .post('/comment/:id', authRequired, addComment)
+  .post('/comment/:id',authRequired , addComment)
 
   .delete('/delete/:userid/:id', authRequired, deleteComment)
 

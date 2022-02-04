@@ -94,15 +94,17 @@ export const addComment = (req, res) => {
       if (error) {
         res.json(errorHandler(true, "Error finding user", { error: error.message }))
       };
-      const newComment = { ...req.body };
-      Comment.create(newComment, (error, comment) => {
+      // const newComment = { ...req.body };
+      Comment.create(req.body, (error, comment) => {
         if (error) {
           res.json(errorHandler(true, "error creating comment"))
         }
-        user.comments.push(newComment);
+        user.comments.push(comment);
         user.save((error) => {
-          // return res.redirect(`/api/user/comment/${user.id}`)
+          console.log(error)
+          
         });
+        return res.json(errorHandler(false, "Happy commenting", comment))
       });
     });
   } catch (error) {
