@@ -32,7 +32,7 @@ Router.get("/", defaultController)
 
   .put("/update/comment/:userid/:id", authRequired, updateComment)
 
-  .post('/favorite/:id',authRequired, addFavorite)
+  .post('/favorite/:id', addFavorite)
 
   .get('/user/favorites/:id', getFavorites)
 

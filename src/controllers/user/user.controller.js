@@ -102,7 +102,6 @@ export const addComment = (req, res) => {
         user.comments.push(comment);
         user.save((error) => {
           console.log(error)
-          
         });
         return res.json(errorHandler(false, "Happy commenting", comment))
       });
@@ -177,15 +176,15 @@ export const addFavorite = (req, res) => {
       if (error) {
         res.json(errorHandler(true, "Error finding user", { error: error.message }))
       }
-      const newFavorite = { ...req.body };
-      Favorite.create(newFavorite, (error, favorite) => {
+      Favorite.create(req.body, (error, favorite) => {
         if (error) {
           res.json(errorHandler(true, "error adding Favorite"))
         }
-        user.favorites.push(newFavorite);
+        user.favorites.push(favorite);
         user.save((error) => {
-          return res.redirect(`/api/user/favorites/${user.id}`)
+          console.log(error)
         });
+        return res.json(errorHandler(false, "Added a favorite", favorite))
       });
     });
   } catch (error) {
