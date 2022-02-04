@@ -11,7 +11,7 @@ export const createToken = id => {
 }
 
 export const authRequired = (req, res, next) => {
-  const secret = process.env.SECERET;
+  const secret = process.env.SECRET || "Hello";
   const token = req.headers.authorization;
   if (token) {
     jwt.verify(token, secret, (error, decodedTkn) => {
