@@ -102,8 +102,8 @@ export const addComment = (req, res) => {
         user.comments.push(comment);
         user.save((error) => {
           console.log(error)
+          return res.json(errorHandler(false, "Happy commenting", comment))
         });
-        return res.json(errorHandler(false, "Happy commenting", comment))
       });
     });
   } catch (error) {
