@@ -176,6 +176,13 @@ export const addFavorite = (req, res) => {
       if (error) {
         res.json(errorHandler(true, "Error finding user", { error: error.message }))
       }
+      const existingFavorite = Favorite.findOne({
+        name: req.body.name
+      }).lean(true)
+
+      if (existingFavorite) {
+        return res.json(errorHandler(true, "This game is already in your favorites"))
+      }
       Favorite.create(req.body, (error, favorite) => {
         if (error) {
           res.json(errorHandler(true, "error adding Favorite"))
