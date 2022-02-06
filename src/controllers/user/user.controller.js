@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 import { User, Comment, Favorite } from '../../models/user.js';
 import errorHandler from '../../utilities/error.js';
@@ -176,24 +177,33 @@ export const addFavorite = (req, res) => {
       if (error) {
         res.json(errorHandler(true, "Error finding user", { error: error.message }))
       }
-      const existingFavorite = Favorite.findOne({
-        name: req.body.name
-      }).lean(true)
-
-      if (existingFavorite) {
-        return res.json(errorHandler(true, "This game is already in your favorites"))
-      }
+   
+      
+      const newFavorite = new Favorite({
+        gameId: req.body.gameId,
+        name: req.body.name,
+        image: req.body.image
+      })
+      
       Favorite.create(req.body, (error, favorite) => {
         if (error) {
           res.json(errorHandler(true, "error adding Favorite"))
         }
-        user.favorites.push(favorite);
+        user.favorites.map((fav) => {
+          if (fav.name.includes(newFavorite.name)) {
+            return res.json(errorHandler(true, "already in your favorites"))
+          }
+        })
+        user.favorites.push(favorite) 
         user.save((error) => {
           console.log(error)
-        });
+        })
+         
+        
         return res.json(errorHandler(false, "Added a favorite", favorite))
       });
     });
+  
   } catch (error) {
     res.json(errorHandler(true, "Error Favoriting", { error: error.message }))
   }
