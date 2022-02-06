@@ -16,7 +16,7 @@ Router.get("/", defaultController)
 
   .get("/users/:id", findUser)
 
-  .put("/update/:id", updateUser)
+  .put("/update/:id", authRequired, updateUser)
 
   .post("/signup", signUpUser)
 
