@@ -32,11 +32,11 @@ Router.get("/", defaultController)
 
   .put("/update/comment/:userid/:id", authRequired, updateComment)
 
-  .post('/favorite/:id', addFavorite)
+  .post('/favorite/:id',  addFavorite)
 
   .get('/user/favorites/:id', getFavorites)
 
-  .delete('/delete/favorite/:userid/:id', authRequired, deleteFavorite)
+  .delete('/delete/favorite/:userid/:id', deleteFavorite)
 
 
 
