@@ -76,6 +76,7 @@ export const findUser = (req, res) => {
             userName,
             name: `${firstName} ${lastName}`,
             email,
+            avatar,
             member_since: createdAt,
             comments
           }
