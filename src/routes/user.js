@@ -12,7 +12,7 @@ Router.get("/", defaultController)
 
   .get("/users", fetchAllUsers)
 
-  .delete("/delete/:id", deleteUser)
+  .delete("/delete/:id", authRequired, deleteUser)
 
   .get("/users/:id", findUser)
 
@@ -36,7 +36,7 @@ Router.get("/", defaultController)
 
   .get('/user/favorites/:id', getFavorites)
 
-  .delete('/delete/favorite/:userid/:id',authRequired , deleteFavorite)
+  .delete('/delete/favorite/:userid/:id' , authRequired, deleteFavorite)
 
 
 
