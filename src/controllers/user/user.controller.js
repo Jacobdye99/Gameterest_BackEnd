@@ -103,8 +103,8 @@ export const addComment = (req, res) => {
         user.comments.push(comment);
         user.save((error) => {
           console.log(error)
+          return res.json(errorHandler(false, "Happy commenting", comment))
         });
-        return res.json(errorHandler(false, "Happy commenting", comment))
       });
     });
   } catch (error) {
@@ -189,18 +189,23 @@ export const addFavorite = (req, res) => {
         if (error) {
           res.json(errorHandler(true, "error adding Favorite"))
         }
-        user.favorites.map((fav) => {
-          if (fav.name.includes(newFavorite.name)) {
-            return res.json(errorHandler(true, "already in your favorites"))
+        let i = 0
+        while (i < user.favorites.length - 1) {
+          i++
+          // console.log(user.favorites[i].name)
+          if (user.favorites[i].name.includes(newFavorite.name)) {
+            return res.send(errorHandler(true, "already in your favorites"))
           }
-        })
+        }
+        // console.log(i)
+        
         user.favorites.push(favorite) 
         user.save((error) => {
-          console.log(error)
+          // console.log(error)
+          return res.json(errorHandler(false, "Added a favorite", favorite))
         })
-         
         
-        return res.json(errorHandler(false, "Added a favorite", favorite))
+        
       });
     });
   
