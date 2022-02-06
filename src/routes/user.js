@@ -12,7 +12,7 @@ Router.get("/", defaultController)
 
   .get("/users", fetchAllUsers)
 
-  .delete("/delete/:id", deleteUser)
+  .delete("/delete/:id", authRequired, deleteUser)
 
   .get("/users/:id", findUser)
 
@@ -28,7 +28,7 @@ Router.get("/", defaultController)
 
   .post('/comment/:id',authRequired , addComment)
 
-  .delete('/delete/:userid/:id', deleteComment)
+  .delete('/delete/:userid/:id',authRequired, deleteComment)
 
   .put("/update/comment/:userid/:id", authRequired, updateComment)
 
