@@ -1,3 +1,4 @@
+
 import mongoose from 'mongoose';
 import { User, Comment, Favorite } from '../../models/user.js';
 import errorHandler from '../../utilities/error.js';
@@ -94,15 +95,16 @@ export const addComment = (req, res) => {
       if (error) {
         res.json(errorHandler(true, "Error finding user", { error: error.message }))
       };
-      const newComment = { ...req.body };
-      Comment.create(newComment, (error, comment) => {
+      // const newComment = { ...req.body };
+      Comment.create(req.body, (error, comment) => {
         if (error) {
           res.json(errorHandler(true, "error creating comment"))
         }
-        user.comments.push(newComment);
+        user.comments.push(comment);
         user.save((error) => {
-          return res.redirect(`/api/user/comment/${user.id}`)
+          console.log(error)
         });
+        return res.json(errorHandler(false, "Happy commenting", comment))
       });
     });
   } catch (error) {
@@ -175,17 +177,33 @@ export const addFavorite = (req, res) => {
       if (error) {
         res.json(errorHandler(true, "Error finding user", { error: error.message }))
       }
-      const newFavorite = { ...req.body };
-      Favorite.create(newFavorite, (error, favorite) => {
+   
+      
+      const newFavorite = new Favorite({
+        gameId: req.body.gameId,
+        name: req.body.name,
+        image: req.body.image
+      })
+      
+      Favorite.create(req.body, (error, favorite) => {
         if (error) {
           res.json(errorHandler(true, "error adding Favorite"))
         }
-        user.favorites.push(newFavorite);
+        user.favorites.map((fav) => {
+          if (fav.name.includes(newFavorite.name)) {
+            return res.json(errorHandler(true, "already in your favorites"))
+          }
+        })
+        user.favorites.push(favorite) 
         user.save((error) => {
-          return res.redirect(`/api/user/favorites/${user.id}`)
-        });
+          console.log(error)
+        })
+         
+        
+        return res.json(errorHandler(false, "Added a favorite", favorite))
       });
     });
+  
   } catch (error) {
     res.json(errorHandler(true, "Error Favoriting", { error: error.message }))
   }
