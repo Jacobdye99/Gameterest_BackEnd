@@ -70,7 +70,7 @@ export const findUser = (req, res) => {
   try {
     User.findById(req.params.id, (error, foundUser) => {
       if (foundUser) {
-        const { userName, firstName, lastName, email, createdAt, comments } = foundUser;
+        const { userName, firstName, lastName, email, createdAt, comments, avatar } = foundUser;
         return res.json(errorHandler(false, "User identified", {
           user: {
             userName,
